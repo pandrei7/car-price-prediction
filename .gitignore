@@ -1,0 +1,12 @@
+# Compiled Python code.
+__pycache__/
+
+# Jupyter checkpoints.
+.ipynb_checkpoints/
+
+# Common IDE settings.
+.idea/
+.vscode/
+
+# Do not track the data using git.
+data/
