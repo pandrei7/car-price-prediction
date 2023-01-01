@@ -10,7 +10,7 @@ from dataclasses import dataclass
 import logging
 import os
 import re
-from typing import List, Union, cast
+from typing import List, Optional, Union, cast
 from urllib.request import urlopen
 
 from bs4 import BeautifulSoup
@@ -27,7 +27,7 @@ class ArticleInfo:
     """Contains metadata about an article (a car)."""
     article: Tag
     id: str
-    img_url: str
+    img_url: Optional[str]
     name: str
 
 
@@ -84,9 +84,12 @@ def parse_article_info(article: Tag) -> ArticleInfo:
     # Index pages seem to only include thumbnails of cars. They "create" these
     # thumbnails by appending the wanted image size to the URL. If we remove
     # this part of the URL, we should have access to the full image.
-    img_size_pattern = r";s=\d+x\d+$"
-    img_url = cast(Tag, article.find("img")).attrs["src"]
-    img_url = re.sub(img_size_pattern, "", img_url)
+    try:
+        img_size_pattern = r";s=\d+x\d+$"
+        img_url = cast(Tag, article.find("img")).attrs["src"]
+        img_url = re.sub(img_size_pattern, "", img_url)
+    except:
+        img_url = None
 
     return ArticleInfo(
         article=copy.copy(article),
@@ -96,18 +99,24 @@ def parse_article_info(article: Tag) -> ArticleInfo:
     )
 
 
-def parse_index_page(html: str) -> List[ArticleInfo]:
+def parse_index_page(html: str) -> Optional[List[ArticleInfo]]:
     """Extract all articles found in a page."""
     # Articles are <article> tags inside the page's only <main> tag.
     soup = BeautifulSoup(html, "html.parser")
-    main_tag = cast(Tag, soup.find("main"))
-    articles = main_tag.find_all("article")
 
+    main_tag = cast(Tag, soup.find("main"))
+    if main_tag is None:
+        return None
+
+    articles = main_tag.find_all("article")
     return [parse_article_info(a) for a in articles]
 
 
-def obtain_image(info: ArticleInfo) -> Image:
+def obtain_image(info: ArticleInfo) -> Optional[Image]:
     """Downloads the image corresponding to an article from Autovit."""
+    if info.img_url is None:
+        return None
+
     image_bytes = download_autovit_image(info.img_url)
     return Image(image=image_bytes, info=copy.copy(info))
 
@@ -152,8 +161,11 @@ def save_to_disk(image: Image, output_dir: PathLike) -> None:
 def main(index_pages_urls: List[str], output_dir: PathLike) -> None:
     """Scrape the given webpages and save the results to disk."""
     for i, index_url in enumerate(index_pages_urls):
-        html = download_autovit_webpage(index_url)
-        infos = parse_index_page(html)
+        while True:
+            html = download_autovit_webpage(index_url)
+            if infos := parse_index_page(html):
+                break
+            logging.warning(f"Failed to parse {index_url}. Retrying...")
 
         logging.info(f"Starting page #{i} ({len(infos)} entries): {index_url}")
         for j, info in enumerate(infos):
@@ -162,9 +174,11 @@ def main(index_pages_urls: List[str], output_dir: PathLike) -> None:
                     f"Skipping article, seems known: {info.id} ({info.name})")
                 continue
 
-            image = obtain_image(info)
-            save_to_disk(image, output_dir)
-            logging.info(f"Done {j:2}: {info.id} {info.name}")
+            if image := obtain_image(info):
+                save_to_disk(image, output_dir)
+                logging.info(f"Done {j:2}: {info.id} {info.name}")
+            elif info.img_url is None:
+                logging.info(f"Article lacks image: {info.id} ({info.name})")
 
         logging.info(f"Done page #{i}")
 
