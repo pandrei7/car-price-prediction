@@ -2,7 +2,9 @@ SHELL := /usr/bin/env bash
 
 .PHONY: help
 help:
-	@echo "Write this, someday"
+	@echo "Available commands:"
+	@echo ""
+	@echo "download_images - scrape images from Autovit"
 
 # Download Autovit images from a range of URLs.
 .PHONY: download_images
