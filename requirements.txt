@@ -1,6 +1,9 @@
 beautifulsoup4
 ipython
+optuna
+optuna-dashboard
 pandas
+plotly
 ratelimit
 scikit-learn
 torch
