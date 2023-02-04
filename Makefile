@@ -4,7 +4,13 @@ SHELL := /usr/bin/env bash
 help:
 	@echo "Available commands:"
 	@echo ""
+	@echo "run_app         - run the web application"
 	@echo "download_images - scrape images from Autovit"
+
+# Run the web application.
+.PHONY: run_app
+run_app:
+	python3 -m src.app.main
 
 # Download Autovit images from a range of URLs.
 .PHONY: download_images
