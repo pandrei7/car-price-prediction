@@ -1,5 +1,23 @@
+function clearForm() {
+    const form = document.getElementById("the-form");
+    for (const input of form.getElementsByTagName("input")) {
+        if (input.type !== "submit") {
+            input.value = "";
+            input.checked = false;
+        }
+    }
+}
+
 function populateExample1() {
     const form = document.getElementById("the-form");
+
+    form.brand.value = "Audi";
+    form.model.value = "A5";
+    form.fuel.value = "Diesel";
+    form.gearbox.value = "Automata";
+    form.body.value = "Sedan";
+    form.color.value = "Maro";
+    form.drivetrain.value = "Fata";
 
     form.year.value = 2019;
     form.km.value = 155000;
@@ -13,12 +31,4 @@ function populateExample1() {
     form.particle_filter.checked = true;
     form.matriculated.checked = false;
     form.first_owner.checked = false;
-
-    form.brand.value = "Audi";
-    form.model.value = "A5";
-    form.fuel.value = "Diesel";
-    form.gearbox.value = "Automata";
-    form.body.value = "Sedan";
-    form.color.value = "Maro";
-    form.drivetrain.value = "Fata";
 }

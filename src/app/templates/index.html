@@ -14,131 +14,142 @@
   <h1>Mașină Preț Predicție</h1>
 
   <main>
-    <button type="button" onclick="populateExample1();">Exemplu 1</button>
+    <button type="button" onclick="populateExample1();">Populează exemplul 1</button>
+    <button type="button" onclick="clearForm();" id="clear-button">Golește formularul</button>
 
     {% if prediction %}
     <p>Preț anticipat: <strong>{{"{:,.2f}".format(prediction)}} €</strong>.</p>
     {% endif %}
 
     <form action="/predict" method="POST" enctype="multipart/form-data" id="the-form">
-      <input type="submit" value="Predict">
+      <input type="submit" value="Ghicește prețul">
 
-      <label for="photo">Imagine</label>
-      <input type="file" name="photo" id="photo" accept="image/png,image/jpg,image/webp" />
-
-      <!-- Numeric inputs -->
-      <label for="year">Anul</label>
-      <input type="number" step="any" min="0" name="year" id="year" value="{{form['year']}}" />
-
-      <label for="km">Km</label>
-      <input type="number" step="any" min="0" name="km" id="km" value="{{form['km']}}" />
-
-      <label for="power">Putere (CP)</label>
-      <input type="number" step="any" min="0" name="power" id="power" value="{{form['power']}}" />
-
-      <label for="cylinder_cap">Capacitate cilindrica (cm3)</label>
-      <input type="number" step="any" min="0" name="cylinder_cap" id="cylinder_cap" value="{{form['cylinder_cap']}}" />
-
-      <label for="doors">Număr de portiere</label>
-      <input type="number" step="any" min="0" name="doors" id="doors" value="{{form['doors']}}" />
-
-      <label for="consumption">Consum (l/100km)</label>
-      <input type="number" step="any" min="0" name="consumption" id="consumption" value="{{form['consumption']}}" />
-
-      <!-- Boolean inputs -->
-      <label for="no_accident">Fără accident în istoric</label>
-      <input type="checkbox" name="no_accident" id="no_accident" value="true" {% if form and "no_accident" in form
-        %}checked{% endif %} />
-
-      <label for="service_book">Carte de service</label>
-      <input type="checkbox" name="service_book" id="service_book" value="true" {% if form and "service_book" in form
-        %}checked{% endif %} />
-
-      <label for="particle_filter">Filtru de particule</label>
-      <input type="checkbox" name="particle_filter" id="particle_filter" value="true" {% if form and "particle_filter"
-        in form %}checked{% endif %} />
-
-      <label for="matriculated">Înmatriculat</label>
-      <input type="checkbox" name="matriculated" id="matriculated" value="true" {% if form and "matriculated" in form
-        %}checked{% endif %} />
-
-      <label for="first_owner">Primul proprietar</label>
-      <input type="checkbox" name="first_owner" id="first_owner" value="true" {% if form and "first_owner" in form
-        %}checked{% endif %} />
+      <div class="form-section" id="image-inputs">
+        <label for="photo">Imagine</label>
+        <input type="file" name="photo" id="photo" accept="image/png,image/jpg,image/webp" />
+      </div>
 
       <!-- Categorical inputs -->
-      <label for="brand">Marca</label>
-      <input list="brand-list" name="brand" id="brand" value="{{form['brand']}}" />
-      <datalist id="brand-list">
-        <option value="BMW">BMW</option>
-        <option value="Audi">Audi</option>
-        <option value="Ford">Ford</option>
-        <option value="Kia">Kia</option>
-      </datalist>
+      <div class="form-section" id="categorical-inputs">
+        <label for="brand">Marca</label>
+        <input list="brand-list" name="brand" id="brand" value="{{form['brand']}}" required />
+        <datalist id="brand-list">
+          <option value="BMW">BMW</option>
+          <option value="Audi">Audi</option>
+          <option value="Ford">Ford</option>
+          <option value="Kia">Kia</option>
+        </datalist>
 
-      <label for="model">Model</label>
-      <input list="model-list" name="model" id="model" value="{{form['model']}}" />
-      <datalist id="model-list">
-        <option value="Vitara">Vitara</option>
-        <option value="Auris">Auris</option>
-        <option value="Octavia">Octavia</option>
-        <option value="Focus">Focus</option>
-      </datalist>
+        <label for="model">Model</label>
+        <input list="model-list" name="model" id="model" value="{{form['model']}}" required />
+        <datalist id="model-list">
+          <option value="Vitara">Vitara</option>
+          <option value="Auris">Auris</option>
+          <option value="Octavia">Octavia</option>
+          <option value="Focus">Focus</option>
+        </datalist>
 
-      <label for="fuel">Combustibil</label>
-      <input list="fuel-list" name="fuel" id="fuel" value="{{form['fuel']}}" />
-      <datalist id="fuel-list">
-        <option value="Benzina">Benzina</option>
-        <option value="Diesel">Diesel</option>
-        <option value="Hibrid">Hibrid</option>
-      </datalist>
+        <label for="fuel">Combustibil</label>
+        <input list="fuel-list" name="fuel" id="fuel" value="{{form['fuel']}}" required />
+        <datalist id="fuel-list">
+          <option value="Benzina">Benzina</option>
+          <option value="Diesel">Diesel</option>
+          <option value="Hibrid">Hibrid</option>
+        </datalist>
 
-      <label for="gearbox">Cutie de viteze</label>
-      <input list="gearbox-list" name="gearbox" id="gearbox" value="{{form['gearbox']}}" />
-      <datalist id="gearbox-list">
-        <option value="Manuala">Manuala</option>
-        <option value="Automata">Automata</option>
-      </datalist>
+        <label for="gearbox">Cutie de viteze</label>
+        <input list="gearbox-list" name="gearbox" id="gearbox" value="{{form['gearbox']}}" required />
+        <datalist id="gearbox-list">
+          <option value="Manuala">Manuala</option>
+          <option value="Automata">Automata</option>
+        </datalist>
 
-      <label for="body">Tip Caroserie</label>
-      <input list="body-list" name="body" id="body" value="{{form['body']}}" />
-      <datalist id="body-list">
-        <option value="SUV">SUV</option>
-        <option value="Sedan">Sedan</option>
-        <option value="Combi">Combi</option>
-        <option value="Compacta">Compacta</option>
-        <option value="Monovolum">Monovolum</option>
-        <option value="Masina de oras">Masina de oras</option>
-        <option value="Coupe">Coupe</option>
-        <option value="Masina mica">Masina mica</option>
-        <option value="Cabrio">Cabrio</option>
-      </datalist>
+        <label for="body">Tip Caroserie</label>
+        <input list="body-list" name="body" id="body" value="{{form['body']}}" required />
+        <datalist id="body-list">
+          <option value="SUV">SUV</option>
+          <option value="Sedan">Sedan</option>
+          <option value="Combi">Combi</option>
+          <option value="Compacta">Compacta</option>
+          <option value="Monovolum">Monovolum</option>
+          <option value="Masina de oras">Masina de oras</option>
+          <option value="Coupe">Coupe</option>
+          <option value="Masina mica">Masina mica</option>
+          <option value="Cabrio">Cabrio</option>
+        </datalist>
 
-      <label for="color">Culoare</label>
-      <input list="color-list" name="color" id="color" value="{{form['color']}}" />
-      <datalist id="color-list">
-        <option value="Cabrio">Cabrio</option>
-        <option value="Negru">Negru</option>
-        <option value="Gri">Gri</option>
-        <option value="Alb">Alb</option>
-        <option value="Albastru">Albastru</option>
-        <option value="Argint">Argint</option>
-        <option value="Rosu">Rosu</option>
-        <option value="Maro">Maro</option>
-        <option value="Verde">Verde</option>
-        <option value="Galben/Auriu">Galben/Auriu</option>
-        <option value="Bej">Bej</option>
-        <option value="Alte culori">Alte culori</option>
-      </datalist>
+        <label for="color">Culoare</label>
+        <input list="color-list" name="color" id="color" value="{{form['color']}}" required />
+        <datalist id="color-list">
+          <option value="Cabrio">Cabrio</option>
+          <option value="Negru">Negru</option>
+          <option value="Gri">Gri</option>
+          <option value="Alb">Alb</option>
+          <option value="Albastru">Albastru</option>
+          <option value="Argint">Argint</option>
+          <option value="Rosu">Rosu</option>
+          <option value="Maro">Maro</option>
+          <option value="Verde">Verde</option>
+          <option value="Galben/Auriu">Galben/Auriu</option>
+          <option value="Bej">Bej</option>
+          <option value="Alte culori">Alte culori</option>
+        </datalist>
 
-      <label for="drivetrain">Tracțiune</label>
-      <input list="drivetrain-list" name="drivetrain" id="drivetrain" value="{{form['drivetrain']}}" />
-      <datalist id="drivetrain-list">
-        <option value="Fata">Fata</option>
-        <option value="Spate">Spate</option>
-        <option value="4x4">4x4</option>
-        <option value="Nu e mentionat">Nu e mentionat</option>
-      </datalist>
+        <label for="drivetrain">Tracțiune</label>
+        <input list="drivetrain-list" name="drivetrain" id="drivetrain" value="{{form['drivetrain']}}" required />
+        <datalist id="drivetrain-list">
+          <option value="Fata">Fata</option>
+          <option value="Spate">Spate</option>
+          <option value="4x4">4x4</option>
+          <option value="Nu e mentionat">Nu e mentionat</option>
+        </datalist>
+      </div>
+
+      <!-- Numeric inputs -->
+      <div class="form-section" id="numeric-inputs">
+        <label for="year">Anul</label>
+        <input type="number" step="any" min="0" name="year" id="year" value="{{form['year']}}" required />
+
+        <label for="km">Km</label>
+        <input type="number" step="any" min="0" name="km" id="km" value="{{form['km']}}" required />
+
+        <label for="power">Putere (CP)</label>
+        <input type="number" step="any" min="0" name="power" id="power" value="{{form['power']}}" required />
+
+        <label for="cylinder_cap">Capacitate cilindrica (cm3)</label>
+        <input type="number" step="any" min="0" name="cylinder_cap" id="cylinder_cap"
+          value="{{form['cylinder_cap']}}" />
+
+        <label for="doors">Număr de portiere</label>
+        <input type="number" step="any" min="0" name="doors" id="doors" value="{{form['doors']}}" required />
+
+        <label for="consumption">Consum (l/100km)</label>
+        <input type="number" step="any" min="0" name="consumption" id="consumption" value="{{form['consumption']}}"
+          required />
+      </div>
+
+      <!-- Boolean inputs -->
+      <div class="form-section" id="boolean-inputs">
+        <label for="no_accident">Fără accident în istoric</label>
+        <input type="checkbox" name="no_accident" id="no_accident" value="true" {% if form and "no_accident" in form
+          %}checked{% endif %} />
+
+        <label for="service_book">Carte de service</label>
+        <input type="checkbox" name="service_book" id="service_book" value="true" {% if form and "service_book" in form
+          %}checked{% endif %} />
+
+        <label for="particle_filter">Filtru de particule</label>
+        <input type="checkbox" name="particle_filter" id="particle_filter" value="true" {% if form and "particle_filter"
+          in form %}checked{% endif %} />
+
+        <label for="matriculated">Înmatriculat</label>
+        <input type="checkbox" name="matriculated" id="matriculated" value="true" {% if form and "matriculated" in form
+          %}checked{% endif %} />
+
+        <label for="first_owner">Primul proprietar</label>
+        <input type="checkbox" name="first_owner" id="first_owner" value="true" {% if form and "first_owner" in form
+          %}checked{% endif %} />
+      </div>
     </form>
   </main>
 
