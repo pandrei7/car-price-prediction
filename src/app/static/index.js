@@ -32,3 +32,28 @@ function populateExample1() {
     form.matriculated.checked = false;
     form.first_owner.checked = false;
 }
+
+function populateExample2() {
+    const form = document.getElementById("the-form");
+
+    form.brand.value = "Volkswagen";
+    form.model.value = "Tiguan";
+    form.fuel.value = "Diesel";
+    form.gearbox.value = "Manuala";
+    form.body.value = "SUV";
+    form.color.value = "Gri";
+    form.drivetrain.value = "4x4";
+
+    form.year.value = 2018;
+    form.km.value = 188820;
+    form.power.value = 150;
+    form.cylinder_cap.value = 1968;
+    form.doors.value = 5;
+    form.consumption.value = 6.7;
+
+    form.no_accident.checked = false;
+    form.service_book.checked = false;
+    form.particle_filter.checked = true;
+    form.matriculated.checked = true;
+    form.first_owner.checked = true;
+}
