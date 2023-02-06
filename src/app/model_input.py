@@ -1,6 +1,7 @@
 from dataclasses import dataclass
+from typing import Optional
 
-import numpy as np
+from PIL import Image
 
 
 @dataclass
@@ -10,7 +11,7 @@ class ModelInput:
     to make predictions.
     """
 
-    image: np.ndarray
+    image: Optional[Image.Image]
 
     # Numeric inputs.
     year: float

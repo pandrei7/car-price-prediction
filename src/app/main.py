@@ -6,9 +6,8 @@ from typing import Optional
 
 from PIL import Image
 from flask import Flask, Request, render_template, request
-import numpy as np
 
-from . import simplemodel_wrapper
+from . import visualmodel_wrapper
 from .model_input import ModelInput
 
 app = Flask(__name__)
@@ -18,9 +17,9 @@ def load_the_model() -> None:
     """Load into memory *globally* the model used to make predictions."""
     global model
 
-    model = simplemodel_wrapper.Wrapper(
-        model_name="firstmodel-tuned",
-        helper_filename="firstmodel-tuned-helper.pkl",
+    model = visualmodel_wrapper.Wrapper(
+        model_name="visualmodel",
+        helper_filename="visualmodel-helper.pkl",
         dir="models",
     )
 
@@ -35,14 +34,9 @@ def make_prediction(model_input: ModelInput) -> float:
 def parse_request(request: Request) -> ModelInput:
     """Convert the user-submitted form into usable input."""
 
-    # Only parse the image if it exists.
-    if request.files["photo"]:
-        image = np.array(Image.open(request.files["photo"]))
-    else:
-        image = np.zeros(1)
-
-    model_input = ModelInput(
-        image=image,
+    return ModelInput(
+        # It's possible the user did not provide an image.
+        image=Image.open(file) if (file := request.files["photo"]) else None,
 
         # Numeric inputs.
         year=float(request.form["year"]),
@@ -68,8 +62,6 @@ def parse_request(request: Request) -> ModelInput:
         color=request.form["color"],
         drivetrain=request.form["drivetrain"],
     )
-
-    return model_input
 
 
 @app.route("/")
