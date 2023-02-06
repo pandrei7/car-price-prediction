@@ -1,5 +1,21 @@
 # Car Price Prediction
 
+## Running the web application
+
+First, make sure you have installed all dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+To run the application, use the following Makefile rule:
+
+```bash
+make run_app
+```
+
+This command will provide a URL. Access that URL using your browser.
+
 ## Scraping data
 
 You can find notebooks for scraping data in the `src/scraping` directory.
