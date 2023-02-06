@@ -25,3 +25,14 @@ process.
 
 If you want to change the rate limit used during scraping (for example, to make
 it run faster), you should change the limits inside the script itself.
+
+## Cropping images
+
+If you want to train a model which uses the images, you might want to crop them
+to a smaller size only once, to save time during subsequent training processes.
+
+You can use the following Makefile rule to do this:
+
+```bash
+make crop_images
+```
