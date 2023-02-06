@@ -1,7 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
+
 body {
     background: #eee;
+    font-family: 'Rubik', sans-serif;
     margin: 0 auto;
     max-width: 30em;
+}
+
+#clear-button:hover {
+    background: #f42c04;
+}
+
+#prediction {
+    font-size: 1.35rem;
+    font-weight: bold;
+}
+
+button, input {
+    font-family: 'Rubik', sans-serif;
+    font-size: .9rem;
+}
+
+button, input[type="submit"] {
+    background: #f7f9fb;
+    font-size: .9rem;
+    padding: .2em .5em;
+}
+
+button:hover, input[type="submit"]:hover {
+    background: #e3e3e3;
+}
+
+input[type="checkbox"] {
+    accent-color: #c92403;
 }
 
 #clear-button {
@@ -24,6 +55,11 @@ body {
     grid-template-columns: 6fr 4fr;
     margin: .5em 0;
     row-gap: .1em;
+}
+
+#photo-preview {
+    max-height: 5em;
+    max-width: 12em;
 }
 
 #boolean-inputs {
