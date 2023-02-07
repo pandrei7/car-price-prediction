@@ -57,3 +57,16 @@ function populateExample2() {
     form.matriculated.checked = true;
     form.first_owner.checked = true;
 }
+
+// Code to implement the photo preview functionality.
+const photoPreview = document.getElementById("photo-preview");
+document.getElementById("photo").onchange = function (_) {
+    const [file] = document.getElementById("photo").files;
+    if (file) {
+        photoPreview.src = URL.createObjectURL(file);
+        photoPreview.hidden = false;
+    }
+};
+window.onload = function () {
+    photoPreview.hidden = true;
+};
