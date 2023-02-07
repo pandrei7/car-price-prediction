@@ -1,5 +1,16 @@
 # Car Price Prediction
 
+This repository contains code and data to train machine learning models which
+can predict the price of second-hand cars.
+
+All data was scraped from the [Autovit website](https://www.autovit.ro/)
+between December 2022 - January 2023.
+
+The repository also provides pre-trained weights for a few Pytorch models.
+These models are used to power the Flask web application pictured below.
+
+![A screenshot of the application](./docs/screenshot.png)
+
 ## Running the web application
 
 First, make sure you have installed all dependencies:
