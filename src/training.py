@@ -26,7 +26,7 @@ class Vocabulary:
         """Get the index which corresponds to a word."""
         return self.word_to_index.get(word, Vocabulary.UNKNOWN_INDEX)
 
-    def get_word(self, index: str) -> str:
+    def get_word(self, index: int) -> str:
         """Get the word which corresponds to an index."""
         return self.index_to_word.get(index, Vocabulary.UNKNOWN_WORD)
 

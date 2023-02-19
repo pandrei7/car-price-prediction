@@ -12,7 +12,6 @@ import numpy as np
 import pandas as pd
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 
 from .training import Vocabulary
 
@@ -36,7 +35,7 @@ def make_input_helper(cols_to_scale: pd.DataFrame, cols_to_embed: pd.DataFrame) 
             for col in cols_to_scale.columns
         },
         vocabs={
-            col: Vocabulary(cols_to_embed[col])
+            col: Vocabulary(cols_to_embed[col].tolist())
             for col in cols_to_embed.columns
         },
     )
@@ -69,7 +68,7 @@ def make_inputs(
             lambda col: col.map(helper.vocabs[col.name].get_index))
         indices = torch.tensor(translated.values)
 
-    return (inputs, indices)
+    return inputs, indices
 
 
 class SimpleModel(nn.Module):

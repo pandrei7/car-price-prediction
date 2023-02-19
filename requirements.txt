@@ -2,6 +2,7 @@ Flask
 Pillow
 beautifulsoup4
 ipython
+numpy
 optuna
 optuna-dashboard
 pandas

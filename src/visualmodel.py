@@ -21,8 +21,8 @@ class VisualModel(nn.Module):
         INTERIM = 28800 # This parameter depends on the image size.
         VISUAL_FEATURES = 10
         self.conv = nn.Sequential(
-            self.conv_block(3, 16),
-            self.conv_block(16, 32),
+            VisualModel.conv_block(3, 16),
+            VisualModel.conv_block(16, 32),
             nn.Flatten(),
             nn.Linear(INTERIM, VISUAL_FEATURES),
             nn.BatchNorm1d(VISUAL_FEATURES),
@@ -47,7 +47,8 @@ class VisualModel(nn.Module):
         hidden.append(nn.Linear(prev_outputs, 1, dtype=torch.float64))
         self.hidden_layers = nn.Sequential(*hidden)
 
-    def conv_block(self, input_size: int, output_size: int) -> nn.Sequential:
+    @staticmethod
+    def conv_block(input_size: int, output_size: int) -> nn.Sequential:
         return nn.Sequential(
             nn.Conv2d(input_size, output_size, (3, 3)),
             nn.ReLU(),
