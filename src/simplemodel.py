@@ -78,8 +78,8 @@ class SimpleModel(nn.Module):
 
     This model is based on linear layers and uses batch normalization.
 
-    This model can handle both numeric inputs, as well as categorical inputs.
-    Categorial inputs have to be passed as indices and will receive embeddings.
+    This model can handle both numeric inputs, and categorical inputs.
+    Categorical inputs have to be passed as indices and will receive embeddings.
     """
 
     def __init__(self, input_size: int, vocab_lens: List[int], embedding_dim: int, hidden_sizes: List[int]):

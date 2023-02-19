@@ -44,7 +44,7 @@ make download_images
 ```
 
 This will download images from Autovit into the `data` directory. The URLs are
-discovered by "browsing" the website, so you cannot chose the exact cars to
+discovered by "browsing" the website, so you cannot choose the exact cars to
 process.
 
 > **Note** that you should probably set which pages you want to explore. Do this
